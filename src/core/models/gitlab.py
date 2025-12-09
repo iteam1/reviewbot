@@ -6,7 +6,6 @@ from typing import Optional, List
 from datetime import datetime
 
 from .base import BasePullRequest, BaseWebhook, PullRequestState, WebhookAction
-from .common import User, Repository
 
 
 class GitLabUser(BaseModel):
