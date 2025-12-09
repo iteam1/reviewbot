@@ -28,9 +28,9 @@
 ## TODO
 - ✅ Complete data models
 - ✅ Complete vcs integrations
-- 🔄 Complete code review agent
-- ⏳ Complete backend (endpoint, health check, logging, etc.)
-- ⏳ Test
+- ✅ Complete code review agent
+- 🔄 Complete backend (endpoint, health check, logging, etc.)
+- ⏳ Test (parse events, fetch diff, run code review agent, format reply, post comment)
 
 ## Structure
 
