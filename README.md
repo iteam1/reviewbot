@@ -45,3 +45,7 @@ reviewbot/                 # Project root
 ```
 
 ## References
+
+https://github.com/openai/openai-python
+
+https://github.com/anthropics/anthropic-sdk-python
