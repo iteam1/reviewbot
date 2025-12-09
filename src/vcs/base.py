@@ -5,6 +5,11 @@ class BaseVCSClient(ABC):
     Base VCS client
     """
     api_key: str # Client API key
+
+    @abstractmethod
+    def verify_connection(self) -> bool:
+        """Test if the API key and connection are valid"""
+        pass
     
     @abstractmethod
     def get_diff(self, **kwargs) -> str:
