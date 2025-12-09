@@ -46,6 +46,14 @@ reviewbot/                 # Project root
 
 ## References
 
+https://mypy-lang.org/
+
+https://docs.python.org/3/library/abc.html
+
+https://docs.python.org/3/library/typing.html
+
+https://docs.pydantic.dev/latest/
+
 https://github.com/openai/openai-python
 
 https://github.com/anthropics/anthropic-sdk-python
