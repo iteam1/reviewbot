@@ -25,6 +25,13 @@
 - Support many mainstream VCS: GitHub, GitLab, DevOps, etc. (*Can be extended*)
 - Can be integrate external knowledge base.
 
+## TODO
+- Complete data models
+- Complete vcs integrations
+- Complete code review agent
+- Complete API layer (backend)
+- Test
+
 ## Structure
 
 ```
@@ -32,7 +39,7 @@ reviewbot/                 # Project root
 ├── src/
 │   ├── core/              # Domain logic and shared components
 │   ├── vcs/               # All VCS provider integrations isolated
-│   ├── llm/               # All LLM provider integrations isolated
+│   ├── agent/             # Code review agent
 │   └── config/            # Configuration management
 ├── backend/
 ├── tests/
@@ -57,3 +64,7 @@ https://docs.pydantic.dev/latest/
 https://github.com/openai/openai-python
 
 https://github.com/anthropics/anthropic-sdk-python
+
+https://docs.gitlab.com/
+
+https://docs.github.com/en
