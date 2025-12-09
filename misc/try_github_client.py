@@ -37,11 +37,11 @@ if __name__ == "__main__":
     # Try to get diff
     try:
         diff = client.get_diff(
-            owner="langchain-ai",
-            repo="langchain",
-            pull_number=34271
+            owner="locchh",
+            repo="spectacle",
+            pull_number=1
         )
-        print(f"✅ Successfully fetched LangChain PR diff!")
+        print(f"✅ Successfully fetched PR diff!")
         print(f"Diff size: {len(diff)} characters")
         print(f"Preview (first 500 chars):\n{diff[:500]}...")
         
@@ -50,4 +50,20 @@ if __name__ == "__main__":
         print(f"Files changed: {file_count}")
         
     except Exception as e:
-        print(f"❌ Error fetching LangChain PR: {e}")
+        print(f"❌ Error fetching PR diff: {e}")
+
+    # Test posting a comment
+    print("\nTesting post_comment...")
+    try:
+        result = client.post_comment(
+            owner="locchh",
+            repo="spectacle",
+            issue_number=1,  # PR #1 (PRs are issues in GitHub API)
+            body="🤖 **ReviewBot Test Comment**\n\nThis is a test comment from the reviewbot GitHub client!\n\n✅ Connection and diff fetching working perfectly."
+        )
+        print(f"✅ Comment posted successfully!")
+        print(f"Comment ID: {result.get('id')}")
+        print(f"Comment URL: {result.get('html_url')}")
+        
+    except Exception as e:
+        print(f"❌ Error posting comment: {e}")
