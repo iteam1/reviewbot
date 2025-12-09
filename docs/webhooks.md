@@ -63,18 +63,48 @@ Follow these criteria:
 ### Step 5, 6: Format response and post back
 
 ## Testing Options
-
 - Mock
-
 - ngrok
-
 - VS Code Port Forwarding
-
 - Cloudflare Tunnel
-
 - VM
 
-## Examples
+## API Reference
+
+### GitHub API
+
+#### Get PR Files/Diff:
+- **Endpoint**: `GET /repos/{owner}/{repo}/pulls/{pull_number}/files`
+- **Auth**: Bearer token in header: `Authorization: Bearer <token>`
+- **Parameters**: `owner`, `repo`, `pull_number`, optional `page`, `per_page`
+- **Response**: Array of file objects with `filename`, `status`, `additions`, `deletions`, `patch`
+
+#### Post Comment:
+- **Endpoint**: `POST /repos/{owner}/{repo}/issues/{issue_number}/comments` (PRs are issues)
+- **Auth**: Bearer token
+- **Body**: `{"body": "comment text"}`
+
+### GitLab API
+
+#### Get MR Diff:
+- **Endpoint**: `GET /projects/{id}/merge_requests/{merge_request_iid}/diffs` (newer)
+- **Alt Endpoint**: `GET /projects/{id}/merge_requests/{merge_request_iid}/changes` (deprecated)
+- **Auth**: Private token in header: `PRIVATE-TOKEN: <token>`
+- **Parameters**: `id` (project), `merge_request_iid`, optional `page`, `per_page`
+- **Response**: Array with `old_path`, `new_path`, `diff`, `new_file`, `deleted_file`, etc.
+
+#### Post Comment:
+- **Endpoint**: `POST /projects/{id}/merge_requests/{merge_request_iid}/notes`
+- **Auth**: Private token
+- **Body**: `{"body": "comment text"}`
+
+### Key Differences
+
+- **Authentication**: GitHub uses Bearer tokens, GitLab uses Private tokens
+- **Parameters**: GitHub uses `owner/repo + pr_number`, GitLab uses `project_id + mr_iid`
+- **Response Format**: Different field names but similar structure
+
+## Payload
 
 - GitLab payload example:
 
