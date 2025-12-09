@@ -69,7 +69,7 @@ Follow these criteria:
 - Cloudflare Tunnel
 - VM
 
-## API Reference
+## API
 
 ### GitHub API
 
@@ -103,6 +103,35 @@ Follow these criteria:
 - **Authentication**: GitHub uses Bearer tokens, GitLab uses Private tokens
 - **Parameters**: GitHub uses `owner/repo + pr_number`, GitLab uses `project_id + mr_iid`
 - **Response Format**: Different field names but similar structure
+
+## Authentication
+
+### GitHub Personal Access Token
+
+1. **Navigate to**: GitHub.com → Profile → Settings → Developer settings → Personal access tokens → Tokens (classic)
+2. **Click**: "Generate new token (classic)"
+3. **Configure**:
+   - **Note**: `reviewbot-token` (descriptive name)
+   - **Expiration**: 30-90 days (recommended)
+   - **Scopes**: ✅ `repo` (full repository access)
+4. **Copy token**: Starts with `ghp_...` (save securely!)
+
+### GitLab Personal Access Token
+
+1. **Navigate to**: GitLab.com → Avatar → Edit profile → Personal access tokens
+2. **Click**: "Add new token"
+3. **Configure**:
+   - **Token name**: `reviewbot-token`
+   - **Expiration date**: Max 365 days (400 days in GitLab 17.6+)
+   - **Scopes**: ✅ `api` (full API access)
+4. **Copy token**: Starts with `glpat-...` (save securely!)
+
+### Security Best Practices
+
+- **Never commit tokens** to version control
+- **Use environment variables**: `GITHUB_TOKEN=ghp_...`, `GITLAB_TOKEN=glpat_...`
+- **Store in `.env` file** for local development
+- **Set appropriate expiration dates** and rotate regularly
 
 ## Payload
 
@@ -244,3 +273,11 @@ https://docs.github.com/en/webhooks/webhook-events-and-payloads
 https://docs.gitlab.com/user/project/integrations/webhook_events/
 
 https://github.com/pingdotgg/sample_hooks
+
+https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
+
+https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28
+
+https://docs.gitlab.com/user/profile/personal_access_tokens/
+
+https://docs.gitlab.com/api/merge_requests/
