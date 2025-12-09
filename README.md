@@ -3,20 +3,20 @@
 *A code review agent that can review MRs*
 
 ```
-┌────────────────┐                ┌──────────────────┐         ┌──────────────┐
-│   VSC          │                │  Your Backend    │  API    │ LLM provider │
-│                ├---[webhook]--->│  (Flask/FastAPI) ├-------->│     API      │
-│  MR/PR Created │                │                  │         │              │
-└────────────────┘                │  /webhook        │         └──────────────┘
-                                  │  endpoint        │
-                                  │                  │
-                                  │  1. Parse event  │
-                                  │  2. Fetch diff   │
-┌────────────────┐                │  3. Add criteria │
-│   VSV          │                │  4. Call LLM     │
-│  MR/PR Comment │<--[comment]----┤  5. Format reply │
-└────────────────┘                │  6. Post comment │
-                                  └──────────────────┘
+┌────────────────┐                ┌────────────────────────────┐           ┌──────────────┐
+│   VSC          │                │  Your Backend              │           │ LLM provider │
+│                ├---[webhook]--->│  (Flask/FastAPI)           ├--[API]--->│     API      │
+│  MR/PR Created │                │                            │           │              │
+└────────────────┘                │  /webhook                  │           └──────────────┘
+                                  │  endpoint                  │
+                                  │                            │
+                                  │  1. Parse event            │
+                                  │  2. Fetch diff             │
+┌────────────────┐                │  3. Ref external knowledge │
+│   VSV          │                │  4. Call LLM               │
+│  MR/PR Comment │<--[comment]----┤  5. Format reply           │
+└────────────────┘                │  6. Post comment           │
+                                  └────────────────────────────┘
 ```
 
 ## Features
