@@ -44,7 +44,7 @@ GET https://gitlab.com/api/v4/projects/{project_id}/merge_requests/{mr_iid}/chan
 
 ### Step 2: Extract diff/code changes
 
-### Step 3, 4 : Ref external knowledge and send to LLM for review
+### Step 3, 4: Ref external knowledge and send to LLM for review
 
 ```python
 prompt = f"""

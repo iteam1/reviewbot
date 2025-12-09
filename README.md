@@ -33,8 +33,8 @@ reviewbot/                 # Project root
 │   ├── core/              # Domain logic and shared components
 │   ├── vcs/               # All VCS provider integrations isolated
 │   ├── llm/               # All LLM provider integrations isolated
-│   └── api/               # API interface layer
 │   └── config/            # Configuration management
+├── backend/
 ├── tests/
 ├── docs/                   # Documentation
 ├── scripts/                # Utility scripts
