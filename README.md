@@ -29,7 +29,7 @@
 - Complete data models
 - Complete vcs integrations
 - Complete code review agent
-- Complete API layer (backend)
+- Complete API layer - backend (endpoint, health check, logging, etc.)
 - Test
 
 ## Structure
