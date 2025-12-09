@@ -13,7 +13,7 @@
                                   │  1. Parse event            │
                                   │  2. Fetch diff             │
 ┌────────────────┐                │  3. Ref external knowledge │
-│   VSC          │                │  4. Call LLM               │
+│   VSC          │                │  4. Run code review agent  │
 │  MR/PR Comment │<--[comment]----┤  5. Format reply           │
 └────────────────┘                │  6. Post comment           │
                                   └────────────────────────────┘
