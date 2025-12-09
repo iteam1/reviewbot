@@ -62,7 +62,6 @@ Follow these criteria:
 
 ### Step 5, 6: Format response and post back
 
-
 ## Testing Options
 
 - Mock
