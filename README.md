@@ -3,20 +3,20 @@
 *A code review agent that can review MRs*
 
 ```
-┌─────────────┐                ┌──────────────────┐         ┌──────────────┐
-│   VSC       │                │  Your Backend    │  API    │ LLM provider │
-│             ├---[webhook]--->│  (Flask/FastAPI) ├-------->│     API      │
-│  MR Created │                │                  │         │              │
-└─────────────┘                │  /webhook        │         └──────────────┘
-                               │  endpoint        │
-                               │                  │
-                               │  1. Parse event  │
-                               │  2. Fetch diff   │
-┌─────────────┐                │  3. Add criteria │
-│   VSV       │                │  4. Call LLM     │
-│  MR Comment │<--[comment]----┤  5. Format reply │
-└─────────────┘                │  6. Post comment │
-                               └──────────────────┘
+┌────────────────┐                ┌──────────────────┐         ┌──────────────┐
+│   VSC          │                │  Your Backend    │  API    │ LLM provider │
+│                ├---[webhook]--->│  (Flask/FastAPI) ├-------->│     API      │
+│  MR/PR Created │                │                  │         │              │
+└────────────────┘                │  /webhook        │         └──────────────┘
+                                  │  endpoint        │
+                                  │                  │
+                                  │  1. Parse event  │
+                                  │  2. Fetch diff   │
+┌────────────────┐                │  3. Add criteria │
+│   VSV          │                │  4. Call LLM     │
+│  MR/PR Comment │<--[comment]----┤  5. Format reply │
+└────────────────┘                │  6. Post comment │
+                                  └──────────────────┘
 ```
 
 ## Features
@@ -26,5 +26,22 @@
 - Can be integrate external knowledge base.
 
 ## Structure
+
+```
+reviewbot/                 # Project root  
+├── src/
+│   ├── core/              # Domain logic and shared components
+│   ├── vcs/               # All VCS provider integrations isolated
+│   ├── llm/               # All LLM provider integrations isolated
+│   └── api/               # API interface layer
+│   └── config/            # Configuration management
+├── tests/
+├── docs/                   # Documentation
+├── scripts/                # Utility scripts
+├── requirements.txt
+├── README.md
+└── .env.example
+└── Makefile                # Development commands
+```
 
 ## References
