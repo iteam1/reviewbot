@@ -66,6 +66,8 @@ https://github.com/openai/openai-python
 
 https://github.com/anthropics/anthropic-sdk-python
 
+https://github.com/langchain-ai/langchain
+
 https://docs.gitlab.com/
 
 https://docs.github.com/en
