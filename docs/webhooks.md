@@ -2,7 +2,7 @@
 
 1. Parse webhook
 2. Extract diff/code changes
-3. Apply review criteria
+3. Apply external knowledge
 4. Send to LLM
 5. Format response
 6. Post comment back
