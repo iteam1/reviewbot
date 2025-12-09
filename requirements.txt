@@ -1,4 +1,4 @@
-mypy
-ruff
-pytest
-python-dotenv
+ruff>=0.14.8
+mypy>=1.19.0
+pytest>=9.0.2
+python-dotenv>=1.2.1
