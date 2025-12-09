@@ -276,6 +276,8 @@ https://github.com/pingdotgg/sample_hooks
 
 https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
 
+https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps
+
 https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28
 
 https://docs.gitlab.com/user/profile/personal_access_tokens/

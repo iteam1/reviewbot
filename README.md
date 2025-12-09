@@ -29,7 +29,7 @@
 - ✅ Complete data models
 - 🔄 Complete vcs integrations
 - ⏳ Complete code review agent
-- ⏳ Complete API layer - backend (endpoint, health check, logging, etc.)
+- ⏳ Complete backend (endpoint, health check, logging, etc.)
 - ⏳ Test
 
 ## Structure
@@ -41,7 +41,8 @@ reviewbot/                 # Project root
 │   ├── vcs/               # All VCS provider integrations isolated
 │   ├── agent/             # Code review agent
 │   └── config/            # Configuration management
-├── backend/
+├── misc/                  # Experimental/
+├── backend/               # API layer
 ├── tests/
 ├── docs/                   # Documentation
 ├── scripts/                # Utility scripts

@@ -2,8 +2,8 @@
 Core models for the reviewbot application.
 """
 from .base import BasePullRequest, BaseWebhook, PullRequestState, WebhookAction
-from .github import GitHubWebhook, GitHubPullRequest, GitHubUser, GitHubRepository
-from .gitlab import GitLabWebhook, GitLabMergeRequestAttributes, GitLabUser, GitLabProject
+from .github_model import GitHubWebhook, GitHubPullRequest, GitHubUser, GitHubRepository
+from .gitlab_model import GitLabWebhook, GitLabMergeRequestAttributes, GitLabUser, GitLabProject
 
 __all__ = [
     # Base models
