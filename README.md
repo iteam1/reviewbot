@@ -1,6 +1,6 @@
 # reviewbot
 
-*A code review agent that can review MRs*
+*A code review agent that can review PRs*
 
 ```
 ┌────────────────┐                ┌──────────────────────────────┐           ┌──────────────┐
