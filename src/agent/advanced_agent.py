@@ -30,15 +30,13 @@ class ReviewSummary(BaseModel):
 class AdvancedCodeReviewAgent:
     """Advanced code review agent with structured output and multi-step analysis"""
     
-    def __init__(self, llm_client: BaseChatModel, model_name: str):
+    def __init__(self, llm_client: BaseChatModel):
         """
         Initialize advanced code review agent
         Args:
             llm_client: LangChain LLM client
-            model_name: Name of the model being used
         """
         self.llm_client = llm_client
-        self.model_name = model_name
         self.parser = PydanticOutputParser(pydantic_object=ReviewSummary)
     
     def _analyze_code_changes(self, diff: str) -> str:

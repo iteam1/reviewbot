@@ -13,27 +13,17 @@ from src.agent import LangChainCodeReviewAgent, ReviewContext
 
 
 if __name__ == "__main__":
-    # Get API key from environment
-    api_key = os.getenv("OPENAI_API_KEY")
-    
-    if not api_key:
-        print("❌ OPENAI_API_KEY not found in environment variables")
-        print("Please set OPENAI_API_KEY in your .env file")
-        sys.exit(1)
-    
-    print(f"Using OpenAI API key: {api_key[:10]}...")
-    
     # Initialize LLM client
     llm_client = ChatOpenAI(
-        model="gpt-4",
-        api_key=api_key,
+        model=os.getenv("MODEL_NAME"),
+        base_url=os.getenv("API_BASE_URL"),
+        api_key=os.getenv("API_KEY"),
         temperature=0.1
     )
     
     # Create LangChain agent
     agent = LangChainCodeReviewAgent(
         llm_client=llm_client,
-        model_name="gpt-4"
     )
     
     print("Testing LangChain Code Review Agent...")

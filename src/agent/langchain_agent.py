@@ -121,7 +121,7 @@ def suggest_improvements(diff: str) -> str:
 class LangChainCodeReviewAgent:
     """LangChain Agent-based Code Review Agent with tools and structured output"""
     
-    def __init__(self, llm_client: BaseChatModel, model_name: str):
+    def __init__(self, llm_client: BaseChatModel):
         """
         Initialize LangChain code review agent
         Args:
@@ -129,7 +129,6 @@ class LangChainCodeReviewAgent:
             model_name: Name of the model being used
         """
         self.llm_client = llm_client
-        self.model_name = model_name
         
         # Define system prompt
         self.system_prompt = textwrap.dedent("""

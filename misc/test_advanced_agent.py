@@ -33,7 +33,6 @@ if __name__ == "__main__":
     # Create advanced review agent
     agent = AdvancedCodeReviewAgent(
         llm_client=llm_client,
-        model_name="gpt-4"
     )
     
     print("Testing AdvancedCodeReviewAgent...")

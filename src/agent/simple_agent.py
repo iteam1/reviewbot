@@ -4,15 +4,13 @@ from langchain_core.language_models import BaseChatModel
 
 
 class SimpleCodeReviewAgent:
-    def __init__(self, llm_client: BaseChatModel, model_name: str):
+    def __init__(self, llm_client: BaseChatModel):
         """
         Simple code review agent
         Args:
             llm_client: LLM client
-            model_name: LLM model name
         """
         self.llm_client = llm_client
-        self.model_name = model_name
     
     def say_hello(self) -> str:
         """
