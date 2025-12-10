@@ -63,13 +63,39 @@ Follow these criteria:
 ### Step 5, 6: Format response and post back
 
 ## Testing Options
-- Mock
-- ngrok
-- VS Code Port Forwarding
-- Cloudflare Tunnel
-- VM
 
-## API
+### Mock request
+
+### VS Code Port Forwarding (Easiest)
+1. Server is running on port 8000
+2. In VS Code: Ctrl+Shift+P → "Ports: Forward a Port" → Enter 8000
+3. VS Code gives you a public URL like https://xxx.devtunnels.ms
+4. Use that URL in GitHub webhook settings
+
+### ngrok (More Reliable)
+
+```bash
+# Install ngrok
+curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
+sudo apt update && sudo apt install ngrok
+
+# Run ngrok
+ngrok http 8000
+```
+
+### Cloudflare Tunnel (Free & Stable)
+
+```bash
+# Install cloudflared
+curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o cloudflared
+chmod +x cloudflared
+
+# Run tunnel
+./cloudflared tunnel --url http://localhost:8000
+```
+
+## VCS API
 
 ### GitHub API
 
@@ -103,6 +129,38 @@ Follow these criteria:
 - **Authentication**: GitHub uses Bearer tokens, GitLab uses Private tokens
 - **Parameters**: GitHub uses `owner/repo + pr_number`, GitLab uses `project_id + mr_iid`
 - **Response Format**: Different field names but similar structure
+
+## VCS Webhooks
+
+### [GitHub Webhook](https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks)
+
+1. Configure GitHub webhook on your repo:
+- Go to repo → Settings → Webhooks → Add webhook
+- **Payload URL**: Your forwarded URL + `/webhooks/github/` (For example: `https://t1rp9w5h-8000.asse.devtunnels.ms/webhooks/github/`)
+- **Content type**: Select `application/json`
+- **Secret**: (optional, match `GITHUB_WEBHOOK_SECRET`)
+- **Events**: Select "Let me select individual events" → check "Pull requests"
+- **Add webhook**
+
+2. Create a test PR
+- Receive the `pull_request` event with action `opened`
+- Fetch the diff via GitHub API
+- Run the LangChain review agent
+- Post a comment back on the PR
+
+### [GitLab Webhook](https://docs.gitlab.com/user/project/integrations/webhooks/)
+
+1. Configure GitLab webhook on your project:
+- Go to project → Settings → Webhooks → Add new webhook
+- **URL**: Your forwarded URL + `/webhooks/gitlab/`
+- **Secret token**: (optional, match `GITLAB_WEBHOOK_TOKEN`, sent as `X-Gitlab-Token` header)
+- **Trigger**: Check "Merge request events"
+
+2. Create a test MR
+- Receive the `Merge Request Hook` event with action `open`
+- Fetch the diff via GitLab API
+- Run the LangChain review agent
+- Post a comment back on the MR
 
 ## Authentication
 
@@ -283,3 +341,7 @@ https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28
 https://docs.gitlab.com/user/profile/personal_access_tokens/
 
 https://docs.gitlab.com/api/merge_requests/
+
+https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks
+
+https://docs.gitlab.com/user/project/integrations/webhooks/
