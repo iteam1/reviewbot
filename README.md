@@ -31,8 +31,8 @@
 - ✅ Complete vcs integrations
 - ✅ Complete code review agent
 - ✅ Complete backend (endpoint, health check, logging, etc.)
-- 🔄 Test (parse events, fetch diff, run code review agent, format reply, post comment)
-- Queue processing
+- ✅ Test (parse events, fetch diff, run code review agent, format reply, post comment)
+- ⏳ Queue processing
 - Enhance code review agent
 
 ## Structure
