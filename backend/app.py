@@ -7,6 +7,10 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 from .webhooks.github import github_webhook_router
 from .webhooks.gitlab import gitlab_webhook_router

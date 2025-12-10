@@ -6,7 +6,7 @@ import hmac
 import hashlib
 import os
 from typing import Dict, Any
-from fastapi import APIRouter, Request, HTTPException, Header
+from fastapi import APIRouter, Request, HTTPException, Header, BackgroundTasks
 
 from langchain_openai import ChatOpenAI
 from src.vcs.github_client import GitHubClient
@@ -32,6 +32,7 @@ def _verify_signature(payload_body: bytes, signature: str, secret: str) -> bool:
 @github_webhook_router.post("/")
 async def handle_github_webhook(
     request: Request,
+    background_tasks: BackgroundTasks,
     x_github_event: str = Header(None),
     x_hub_signature_256: str = Header(None)
 ):
@@ -52,17 +53,20 @@ async def handle_github_webhook(
         if x_github_event != "pull_request":
             return {"message": "Event ignored", "event_type": x_github_event}
         
-        return await _handle_pull_request(payload)
+        # Process in background to avoid webhook timeout
+        background_tasks.add_task(_process_pull_request, payload)
+        return {"message": "Webhook received, processing in background"}
     
     except Exception as e:
         logger.error(f"Error handling GitHub webhook: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-async def _handle_pull_request(payload: Dict[str, Any]) -> Dict[str, str]:
-    """Handle pull request opened/synchronize events"""
+def _process_pull_request(payload: Dict[str, Any]) -> None:
+    """Process pull request in background"""
     action = payload.get("action")
     if action not in ["opened", "synchronize"]:
-        return {"message": f"PR action '{action}' ignored"}
+        logger.info(f"PR action '{action}' ignored")
+        return
     
     pr = payload["pull_request"]
     repo = payload["repository"]
@@ -75,7 +79,8 @@ async def _handle_pull_request(payload: Dict[str, Any]) -> Dict[str, str]:
     owner, repo = repo_name.split("/")
     diff = github.get_diff(owner=owner, repo=repo, pull_number=pr_number)
     if not diff:
-        return {"message": "No changes to review"}
+        logger.info("No changes to review")
+        return
     
     # Review with LangChain agent
     llm = ChatOpenAI(
@@ -91,4 +96,3 @@ async def _handle_pull_request(payload: Dict[str, Any]) -> Dict[str, str]:
     # Post comment
     github.post_comment(owner=owner, repo=repo, issue_number=pr_number, body=response.detailed_analysis)
     logger.info(f"Posted review for PR #{pr_number}")
-    return {"message": "Review completed", "pr_number": pr_number}

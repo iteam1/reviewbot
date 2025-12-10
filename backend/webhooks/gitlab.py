@@ -4,7 +4,7 @@ GitLab webhook handler for ReviewBot
 import logging
 import os
 from typing import Dict, Any
-from fastapi import APIRouter, Request, HTTPException, Header
+from fastapi import APIRouter, Request, HTTPException, Header, BackgroundTasks
 
 from langchain_openai import ChatOpenAI
 from src.vcs.gitlab_client import GitLabClient
@@ -24,6 +24,7 @@ def _verify_token(token: str) -> bool:
 @gitlab_webhook_router.post("/")
 async def handle_gitlab_webhook(
     request: Request,
+    background_tasks: BackgroundTasks,
     x_gitlab_event: str = Header(None),
     x_gitlab_token: str = Header(None)
 ):
@@ -41,18 +42,21 @@ async def handle_gitlab_webhook(
         if x_gitlab_event != "Merge Request Hook":
             return {"message": "Event ignored", "event_type": x_gitlab_event}
         
-        return await _handle_merge_request(payload)
+        # Process in background to avoid webhook timeout
+        background_tasks.add_task(_process_merge_request, payload)
+        return {"message": "Webhook received, processing in background"}
     
     except Exception as e:
         logger.error(f"Error handling GitLab webhook: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-async def _handle_merge_request(payload: Dict[str, Any]) -> Dict[str, str]:
-    """Handle merge request opened/updated events"""
+def _process_merge_request(payload: Dict[str, Any]) -> None:
+    """Process merge request in background"""
     attrs = payload.get("object_attributes", {})
     action = attrs.get("action")
     if action not in ["open", "update"]:
-        return {"message": f"MR action '{action}' ignored"}
+        logger.info(f"MR action '{action}' ignored")
+        return
     
     project = payload["project"]
     project_id, project_name = project["id"], project["path_with_namespace"]
@@ -64,7 +68,8 @@ async def _handle_merge_request(payload: Dict[str, Any]) -> Dict[str, str]:
     gitlab = GitLabClient(api_key=os.getenv("GITLAB_TOKEN"))
     diff = gitlab.get_diff(project_id=project_id, merge_request_iid=mr_iid)
     if not diff:
-        return {"message": "No changes to review"}
+        logger.info("No changes to review")
+        return
     
     # Review with LangChain agent
     llm = ChatOpenAI(
@@ -80,4 +85,3 @@ async def _handle_merge_request(payload: Dict[str, Any]) -> Dict[str, str]:
     # Post comment
     gitlab.post_comment(project_id=project_id, merge_request_iid=mr_iid, body=response.detailed_analysis)
     logger.info(f"Posted review for MR !{mr_iid}")
-    return {"message": "Review completed", "mr_iid": mr_iid}
