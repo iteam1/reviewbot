@@ -36,21 +36,28 @@
 ## Structure
 
 ```
-reviewbot/                 # Project root  
+reviewbot/                    # Project root  
 ├── src/
-│   ├── core/              # Domain logic and shared components
-│   ├── vcs/               # All VCS provider integrations isolated
-│   ├── agent/             # Code review agent
-│   └── config/            # Configuration management
-├── misc/                  # Experimental/
-├── backend/               # API layer
+│   ├── core/                 # Domain logic and shared components
+│   ├── vcs/                  # All VCS provider integrations isolated
+│   ├── agent/                # Code review agent
+│   └── config/               # Configuration management
+├── misc/                     # Experimental/
+├──backend/                   # API layer
+│    ├── __init__.py
+│    ├── app.py               # FastAPI app
+│    └── webhooks/            # Webhook handlers
+│       ├── github.py
+│       └── gitlab.py
+├── routes/                   # API endpoints
+└── middleware/               # Auth, logging, etc.
 ├── tests/
-├── docs/                   # Documentation
-├── scripts/                # Utility scripts
+├── docs/                     # Documentation
+├── scripts/                  # Utility scripts
 ├── requirements.txt
 ├── README.md
 └── .env.example
-└── Makefile                # Development commands
+└── Makefile                  # Development commands
 ```
 
 ## References
