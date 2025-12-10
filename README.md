@@ -48,11 +48,11 @@ reviewbot/                    # Project root
 ├──backend/                   # API layer
 │    ├── __init__.py
 │    ├── app.py               # FastAPI app
-│    └── webhooks/            # Webhook handlers
-│       ├── github.py
-│       └── gitlab.py
-├── routes/                   # API endpoints
-└── middleware/               # Auth, logging, etc.
+│    ├── webhooks/            # Webhook handlers
+│    │  ├── github.py
+│    │  └── gitlab.py
+│    ├── routes/              # API endpoints
+│    └── middleware/          # Auth, logging, etc.
 ├── tests/
 ├── docs/                     # Documentation
 ├── scripts/                  # Utility scripts
