@@ -30,8 +30,10 @@
 - ✅ Complete data models
 - ✅ Complete vcs integrations
 - ✅ Complete code review agent
-- 🔄 Complete backend (endpoint, health check, logging, etc.)
-- ⏳ Test (parse events, fetch diff, run code review agent, format reply, post comment)
+- ✅ Complete backend (endpoint, health check, logging, etc.)
+- 🔄 Test (parse events, fetch diff, run code review agent, format reply, post comment)
+- Queue processing
+- Enhance code review agent
 
 ## Structure
 
@@ -58,6 +60,13 @@ reviewbot/                    # Project root
 ├── README.md
 └── .env.example
 └── Makefile                  # Development commands
+```
+
+## Quickstart
+
+```bash
+source .venv/bin/activate
+uvicorn backend.app:app --reload --host 0.0.0.0 --port 8000
 ```
 
 ## References
