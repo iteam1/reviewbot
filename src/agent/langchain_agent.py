@@ -181,7 +181,7 @@ class LangChainCodeReviewAgent:
         """
         try:
             # Prepare the review request message
-            review_request = f"""
+            review_request = textwrap.dedent(f"""
             Please review this code diff using all available tools:
             
             Repository: {context.repository_name}
@@ -201,7 +201,7 @@ class LangChainCodeReviewAgent:
             4. General improvement suggestions
             
             Provide a comprehensive structured review with specific findings and recommendations.
-            """
+            """)
             
             # Configure the agent execution
             config = {"configurable": {"thread_id": thread_id}}
@@ -227,56 +227,6 @@ class LangChainCodeReviewAgent:
                 detailed_analysis="Agent execution failed",
                 issues_found=[str(e)],
                 recommendations=["Please check the agent configuration"],
-                approval_status="error",
-                confidence_score=0.0
-            )
-    
-    def _parse_agent_response(self, response: str, context: ReviewContext) -> CodeReviewResponse:
-        """Parse agent response into structured format"""
-        try:
-            # Extract key information from the agent's response
-            lines = response.split('\n')
-            issues = []
-            recommendations = []
-            
-            for line in lines:
-                line = line.strip()
-                if any(keyword in line.lower() for keyword in ['issue', 'problem', 'bug', 'vulnerability']):
-                    if line and not line.startswith('#'):
-                        issues.append(line)
-                elif any(keyword in line.lower() for keyword in ['recommend', 'suggest', 'should', 'consider']):
-                    if line and not line.startswith('#'):
-                        recommendations.append(line)
-            
-            # Determine approval status
-            if any(keyword in response.lower() for keyword in ['critical', 'severe', 'dangerous']):
-                approval_status = "rejected"
-                confidence = 0.95
-            elif len(issues) > 2:
-                approval_status = "needs_changes"
-                confidence = 0.9
-            elif len(issues) > 0:
-                approval_status = "needs_changes"
-                confidence = 0.85
-            else:
-                approval_status = "approved"
-                confidence = 0.8
-            
-            return CodeReviewResponse(
-                summary=f"Review completed for {context.repository_name} PR #{context.pull_request_id}. Found {len(issues)} issues.",
-                detailed_analysis=response,
-                issues_found=issues[:10],  # Limit to top 10
-                recommendations=recommendations[:10],  # Limit to top 10
-                approval_status=approval_status,
-                confidence_score=confidence
-            )
-            
-        except Exception as e:
-            return CodeReviewResponse(
-                summary=f"Error parsing response: {e}",
-                detailed_analysis=response,
-                issues_found=[f"Parse error: {e}"],
-                recommendations=["Please check the agent response format"],
                 approval_status="error",
                 confidence_score=0.0
             )
