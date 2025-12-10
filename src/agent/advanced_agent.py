@@ -41,7 +41,7 @@ class AdvancedCodeReviewAgent:
         self.model_name = model_name
         self.parser = PydanticOutputParser(pydantic_object=ReviewSummary)
     
-    def analyze_code_changes(self, diff: str) -> str:
+    def _analyze_code_changes(self, diff: str) -> str:
         """
         Step 1: Analyze what changes were made
         """
@@ -63,7 +63,7 @@ class AdvancedCodeReviewAgent:
         response = self.llm_client.invoke(messages)
         return response.content
     
-    def detect_issues(self, diff: str, analysis: str, external_knowledge: str = "") -> str:
+    def _detect_issues(self, diff: str, analysis: str, external_knowledge: str = "") -> str:
         """
         Step 2: Detect potential issues in the code
         """
@@ -103,7 +103,7 @@ class AdvancedCodeReviewAgent:
         response = self.llm_client.invoke(messages)
         return response.content
     
-    def generate_structured_review(self, diff: str, analysis: str, issues: str, external_knowledge: str = "") -> ReviewSummary:
+    def _generate_structured_review(self, diff: str, analysis: str, issues: str, external_knowledge: str = "") -> ReviewSummary:
         """
         Step 3: Generate structured review output
         """
@@ -139,7 +139,7 @@ class AdvancedCodeReviewAgent:
         response = self.llm_client.invoke(messages)
         return self.parser.parse(response.content)
     
-    def format_review_comment(self, review: ReviewSummary) -> str:
+    def _format_review_comment(self, review: ReviewSummary) -> str:
         """
         Step 4: Format the structured review into a readable comment
         """
@@ -196,16 +196,16 @@ class AdvancedCodeReviewAgent:
         """
         try:
             # Step 1: Analyze changes
-            analysis = self.analyze_code_changes(diff)
+            analysis = self._analyze_code_changes(diff)
             
             # Step 2: Detect issues
-            issues = self.detect_issues(diff, analysis, external_knowledge)
+            issues = self._detect_issues(diff, analysis, external_knowledge)
             
             # Step 3: Generate structured review
-            structured_review = self.generate_structured_review(diff, analysis, issues, external_knowledge)
+            structured_review = self._generate_structured_review(diff, analysis, issues, external_knowledge)
             
             # Step 4: Format as readable comment
-            formatted_comment = self.format_review_comment(structured_review)
+            formatted_comment = self._format_review_comment(structured_review)
             
             return formatted_comment
             
@@ -217,9 +217,9 @@ class AdvancedCodeReviewAgent:
         Get structured review data (for programmatic use)
         """
         try:
-            analysis = self.analyze_code_changes(diff)
-            issues = self.detect_issues(diff, analysis, external_knowledge)
-            return self.generate_structured_review(diff, analysis, issues, external_knowledge)
+            analysis = self._analyze_code_changes(diff)
+            issues = self._detect_issues(diff, analysis, external_knowledge)
+            return self._generate_structured_review(diff, analysis, issues, external_knowledge)
         except Exception as e:
             # Return error as structured format
             return ReviewSummary(
